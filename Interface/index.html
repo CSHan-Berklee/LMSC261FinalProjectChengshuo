@@ -1,0 +1,27 @@
+<form id="form">
+    <input type="file" name="midi" accept=".mid" required><br>
+    <textarea name="lyrics" placeholder="Enter lyrics..." required></textarea><br>
+    <button type="submit">Generate score.json</button>
+  </form>
+  
+  <pre id="output"></pre>
+  
+  <script>
+  document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+  
+    const form = new FormData(e.target);
+    const res = await fetch("/generate_score", {
+      method: "POST",
+      body: form
+    });
+  
+    const data = await res.json();
+    if (data.score) {
+      document.getElementById("output").textContent = data.score;
+    } else {
+      alert("Error: " + data.error);
+    }
+  });
+  </script>
+  
